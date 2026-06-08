@@ -44,3 +44,4 @@ venv/
 docs/*.pdf
 *.aux
 *.log
+work/
