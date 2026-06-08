@@ -101,7 +101,17 @@ arithmetic coincidence.
 ## Reproduce it yourself
 
 You need credentialed access to MIMIC-IV v3.1 from PhysioNet; we cannot
-redistribute the patient-level data. Then:
+redistribute the patient-level data.
+
+To rebuild the project from the raw PhysioNet download, first load MIMIC-IV into a
+DuckDB database. The exact steps we used are in a companion repository,
+[mimic-iv-duckdb](https://github.com/nielspac177/mimic-iv-duckdb), which turns the
+`hosp/` and `icu/` CSV files into a `mimic4.db` with `mimiciv_hosp` and
+`mimiciv_icu` schemas. The cohort files this study builds on are derived from that
+database.
+
+The Triple65 check itself reads the raw `diagnoses_icd.csv.gz` directly, so you can
+run it with or without the database:
 
 ```bash
 export MIMIC_ROOT=/path/to/physionet.org/files/mimiciv/3.1
