@@ -1,7 +1,7 @@
 name: CI
 
 # Runs the data-free test suite on every push/PR and nightly. The
-# patient-data-gated invariants (MIMIC_ROOT) are skipped in CI by design — they
+# patient-data-gated invariants (MIMIC_ROOT) are skipped in CI by design; they
 # only run locally where credentialed MIMIC-IV is available.
 on:
   push:
