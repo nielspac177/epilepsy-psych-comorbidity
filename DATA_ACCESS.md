@@ -25,7 +25,7 @@ To confirm you are using the exact same inputs we did, check these MD5s:
 | `hosp/diagnoses_icd.csv.gz` | `53535040f59bd4f2a68de9c9c04876f1` |
 | `epilepsy_patient_cohort_psm.csv` | `6fec977f756603fc3f380b560e367a34` |
 
-## NIS — HCUP National Inpatient Sample (2012–2020)
+## NIS: HCUP National Inpatient Sample (2012–2020)
 
 Purchased/licensed through the HCUP Central Distributor:
 https://hcup-us.ahrq.gov/. Redistribution is not permitted. Set:
@@ -46,4 +46,4 @@ Per-patient evidence tables (e.g. ICD codes contributing to each flag) used to
 satisfy reviewer audit requests live in a **separate private repository**
 restricted to credentialed collaborators, never in this public repo. A branch in
 a public repo is world-readable, so "private branch" is not a safe option for
-credentialed data — a separate private repository is used instead.
+credentialed data, so a separate private repository is used instead.

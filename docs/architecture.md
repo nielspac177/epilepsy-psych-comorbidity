@@ -17,7 +17,7 @@ flowchart TD
         M3["03_psm_analysis<br/>1:1 propensity matching"]
         M4["09_logreg_full<br/>multivariable models"]
         M5["build_evidence / build_sankey<br/>per-patient ICD evidence (PRIVATE)"]
-        M6["verify_triple65_duckdb<br/>coincidence_math<br/>rederive_pandas / rederive_shell"]
+        M6["verify_triple65_duckdb<br/>rederive_pandas / rederive_shell"]
         M1 --> M2 --> M3 --> M4
         M2 --> M5
         M2 --> M6
@@ -56,7 +56,7 @@ flowchart TD
   carries only code and fully aggregated tables.
 - **Independent verifiability.** The headline MIMIC result is re-derivable by
   three separate implementations (DuckDB SQL, streaming pandas, shell/awk) that
-  share no code — see `docs/TRIPLE65_EXPLAINER.md`.
+  share no code. See `docs/TRIPLE65_EXPLAINER.md`.
 - **Ascertainment differs by cohort by design.** MIMIC-IV aggregates diagnoses
   across all admissions (cumulative); NIS treats each discharge independently
   (single-encounter); MGB adds chart review and PHQ-9/GAD-7. These differences

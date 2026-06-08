@@ -1,15 +1,14 @@
-# Psychiatric Comorbidity in Epilepsy Surgery — Reproducibility Code
+# Psychiatric Comorbidity in Epilepsy Surgery: Reproducibility Code
 
 Analysis code for the study *"Prevalence and Postoperative Trajectory of
 Psychiatric Comorbidities Among Patients Undergoing Epilepsy Surgery: A
 Multi-Cohort Study."*
 
-This repository contains **code only** — every script, the ICD code
-definitions, the statistical pipeline, tests, and documentation needed to
-reproduce the analyses from the source databases. **It contains no
-patient-level data.** The clinical datasets (MIMIC-IV, NIS, and the MGB chart
-review) are obtained separately under their respective data use agreements; see
-[`DATA_ACCESS.md`](DATA_ACCESS.md).
+This repository contains code only: every script, the ICD code definitions, the
+statistical pipeline, tests, and documentation needed to reproduce the analyses
+from the source databases. **It contains no patient-level data.** The clinical
+datasets (MIMIC-IV, NIS, and the MGB chart review) are obtained separately under
+their respective data use agreements; see [`DATA_ACCESS.md`](DATA_ACCESS.md).
 
 ## What this study did
 
@@ -28,15 +27,14 @@ with seizure freedom the strongest predictor of improvement.
 ## The "Triple65" result
 
 In MIMIC-IV, depression, anxiety, and substance-use disorder each affect exactly
-65 of 244 surgical patients (26.6%). This identical prevalence is **real, not a
-bug** — the three groups are different patients. The full audit, with
-independent re-derivations and the coincidence math, is in
-[`docs/TRIPLE65_EXPLAINER.md`](docs/TRIPLE65_EXPLAINER.md). Verify it yourself:
+65 of 244 surgical patients (26.6%). The identical prevalence is real, not a bug:
+the three groups are different patients. The full audit, including four
+independent re-derivations from the raw records, is in
+[`docs/TRIPLE65_EXPLAINER.md`](docs/TRIPLE65_EXPLAINER.md). Check it yourself:
 
 ```bash
 export MIMIC_ROOT=/path/to/physionet.org/files/mimiciv/3.1
 python src/mimic/verify_triple65_duckdb.py   # independent DuckDB re-derivation
-python src/mimic/coincidence_math.py         # exact coincidence probabilities
 ```
 
 ## Repository layout
@@ -63,10 +61,10 @@ variables documented in [`DATA_ACCESS.md`](DATA_ACCESS.md).
 
 ## Documentation
 
-- [`docs/architecture.md`](docs/architecture.md) — pipeline data-flow
-- [`docs/CODE_INTERNALS.md`](docs/CODE_INTERNALS.md) — line-by-line walkthrough of every script
-- [`docs/TRIPLE65_EXPLAINER.md`](docs/TRIPLE65_EXPLAINER.md) — the identical-prevalence audit
-- [`docs/adr/`](docs/adr/) — architecture decision records
+- [`docs/architecture.md`](docs/architecture.md): pipeline data-flow
+- [`docs/CODE_INTERNALS.md`](docs/CODE_INTERNALS.md): a from-scratch, line-by-line walkthrough of the code for readers new to Python
+- [`docs/TRIPLE65_EXPLAINER.md`](docs/TRIPLE65_EXPLAINER.md): the identical-prevalence audit
+- [`docs/adr/`](docs/adr/): architecture decision records
 
 ## Author
 
