@@ -95,8 +95,8 @@ depression, anxiety, and substance-use disorders accumulate at broadly similar
 clinical rates, each landing somewhere around a quarter to a third of patients in
 this cohort and in prior work. When three underlying rates are that close, three
 counts out of a few hundred patients will often land within a point or two of
-each other, and once in a while they tie exactly. The tie is arithmetic. It is
-not the pipeline.
+each other, and once in a while they tie exactly. It is not the pipeline, but an
+arithmetic coincidence.
 
 ## Reproduce it yourself
 
