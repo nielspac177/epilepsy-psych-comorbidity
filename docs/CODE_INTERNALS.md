@@ -1,4 +1,4 @@
-# The code, explained from scratch
+# The code explained for dummies
 
 This is a teaching walkthrough of the analysis code in this repository. It
 assumes you have never written a line of Python. The goal is that by the end you
