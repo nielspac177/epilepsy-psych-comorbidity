@@ -1,0 +1,12 @@
+# Core analysis stack for the epilepsy psychiatric-comorbidity study.
+# Pin major versions for reproducibility; minor versions are flexible.
+pandas>=2.0
+numpy>=1.24
+scipy>=1.10
+duckdb>=1.0
+statsmodels>=0.14
+scikit-learn>=1.3
+matplotlib>=3.7
+openpyxl>=3.1
+plotly>=5.18
+pytest>=7.4

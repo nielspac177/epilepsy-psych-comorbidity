@@ -1,0 +1,13 @@
+{
+  "code_path": "duckdb-sql (independent of build_evidence.py pandas path)",
+  "n_surgical": 244,
+  "depression": 65,
+  "anxiety": 65,
+  "substance_use": 65,
+  "all_three_equal_65": true,
+  "per_patient_disagreements_vs_stored_flags": 0,
+  "inputs_md5": {
+    "diagnoses_icd_csv_gz": "53535040f59bd4f2a68de9c9c04876f1",
+    "cohort_csv": "6fec977f756603fc3f380b560e367a34"
+  }
+}

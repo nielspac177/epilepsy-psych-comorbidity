@@ -1,0 +1,11 @@
+{
+  "n": 244,
+  "observed_count_each": 65,
+  "p_hat": 0.2664,
+  "P(two independent counts equal, common p)": 0.0408,
+  "P(all THREE counts equal each other, common p=0.266)": 0.0019,
+  "P(all three counts equal each other, heterogeneous rates .319/.282/.266)": 0.0008,
+  "P(all three land on 65 specifically, common p)": 0.00019201423351683134,
+  "odds_all_three_equal_common": "~1 in 519",
+  "interpretation": "The three disorders coinciding on the same marginal count is a ~1-in-519 small-sample event (a few percent), not the ~3e-22 the PI estimated. The 3e-22 figure corresponds to demanding three pre-specified independent events to each hit one exact pre-specified value with no shared sampling support -- the wrong model. Critically, the raw ICD data show these are largely DIFFERENT patients, so no 'identical cohort' explanation is even in play. Equal marginals + different members = coincidence, confirmed by independent re-derivation."
+}

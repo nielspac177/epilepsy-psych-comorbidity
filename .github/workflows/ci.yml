@@ -1,0 +1,33 @@
+name: CI
+
+# Runs the data-free test suite on every push/PR and nightly. The
+# patient-data-gated invariants (MIMIC_ROOT) are skipped in CI by design — they
+# only run locally where credentialed MIMIC-IV is available.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 7 * * *"   # nightly 07:00 UTC
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run data-free tests
+        run: pytest -q tests/test_icd_matching.py
+      - name: Leak check (no patient data tracked)
+        run: |
+          if git ls-files | grep -E '\.(csv|xlsx|xls|db|duckdb|parquet)$'; then
+            echo "::error::Data file is tracked — DUA violation"; exit 1
+          fi
+          echo "OK: no data files tracked"

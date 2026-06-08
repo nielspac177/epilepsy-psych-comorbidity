@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this analysis code, please cite it as below."
+title: "Psychiatric Comorbidity in Epilepsy Surgery — Reproducibility Code"
+type: software
+authors:
+  - family-names: "Pacheco-Barrios"
+    given-names: "Niels"
+    orcid: ""  # add your ORCID
+license: MIT
+repository-code: ""  # add the public GitHub URL after creation
+abstract: >
+  Analysis code reproducing the multi-cohort study of psychiatric comorbidity
+  prevalence and postoperative trajectory among epilepsy-surgery patients
+  (MGB chart review, MIMIC-IV v3.1, and the National Inpatient Sample).
+  Code only; contains no patient-level data.
