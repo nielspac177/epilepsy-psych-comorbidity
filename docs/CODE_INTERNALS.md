@@ -621,7 +621,97 @@ data throws at you.
 
 ---
 
-## Chapter 7. The statistical layer, and where to go from here
+## Chapter 7. The MGB symptom analysis: coalescing messy timepoints
+
+Chapter 6 recovered the individual PHQ-9 and GAD-7 scores. This chapter turns
+them into the answers two reviewer questions asked for: how many patients
+improved by a clinically meaningful amount, and whether the patients who have
+scores differ from those who do not. The code lives in
+`src/mgb/build_mgb_analysis_dataset.py` and `src/mgb/recompute_b11_b13_final.py`.
+
+### Coalescing two columns into one baseline
+
+The source workbook stores each instrument across three columns: two early
+measurements and one final follow-up. We want a single baseline value per patient
+and a single follow-up value. In the dataset builder:
+
+```python
+phq["phq9_pre"] = phq["phq9_baseline"].fillna(phq["phq9_mid"])
+phq["phq9_post"] = phq["phq9_followup"]
+```
+
+`fillna` is the key idea. `phq["phq9_baseline"]` is the earliest column, but it is
+sparsely filled. `.fillna(phq["phq9_mid"])` says: keep the baseline value where it
+exists, and wherever it is missing, fill in from the second column instead. The
+result, `phq9_pre`, is a single baseline that uses the earliest available score
+for each patient. This is called a coalesce, and it matters because it nearly
+quadruples how many patients have a usable baseline, which is what lets the paired
+analysis run on 47 patients instead of 11. The follow-up, `phq9_post`, is just the
+last column. The same two lines repeat for the GAD-7.
+
+### Counting who improved
+
+The improvement calculation is one small function in the recompute script. The
+heart of it:
+
+```python
+a, b = num(d[pre]), num(d[post])
+m = a.notna() & b.notna()
+drop = a[m] - b[m]
+n = int(m.sum())
+```
+
+`a` and `b` are the before and after columns. `m = a.notna() & b.notna()` builds a
+boolean mask that is true only for patients who have **both** a before and an
+after score; the `&` combines the two conditions element by element. `a[m] - b[m]`
+then subtracts after from before for just those patients, so a positive `drop`
+means the score went down, which for these scales means the patient improved.
+`int(m.sum())` counts the paired patients, because adding up a column of True/False
+treats each True as 1.
+
+```python
+ed, fx = ED50[label], FIXED[label]
+"n_ed50": int((drop >= ed).sum()),
+"pct_ed50": round(100 * (drop >= ed).mean(), 1),
+```
+
+`ED50` and `FIXED` are dictionaries holding the two thresholds for "clinically
+meaningful" (3.7 and 5 points for the PHQ-9, for example). `drop >= ed` compares
+every patient's drop to the threshold and produces another column of True/False.
+Summing it counts how many cleared the bar; taking its `.mean()` gives the
+fraction who did, which times 100 is the percentage. So two short expressions turn
+a column of score changes into "12 of 47 patients improved, which is 25.5%."
+
+```python
+from scipy.stats import wilcoxon
+p = float(wilcoxon(a[m], b[m]).pvalue) if n > 0 and (a[m] != b[m]).any() else float("nan")
+```
+
+`wilcoxon` is a ready-made statistical test from the SciPy library. It compares the
+before and after scores as matched pairs and returns, among other things, a
+`pvalue` telling you how likely the observed change is under no real effect. The
+`if ...` guard avoids calling it when there is nothing to test (no pairs, or every
+pair identical), returning the missing marker instead of crashing.
+
+### The trajectory test, and the figures
+
+The before-and-after change in a yes/no outcome (does the patient have a
+psychiatric diagnosis) uses a different test, McNemar's test, from `statsmodels`,
+which is built for paired yes/no data. The plotting script,
+`src/mgb/make_b11_b13_figures.py`, then draws the paired slope plots and trajectory
+lines with `matplotlib`. Those are worth reading once you are comfortable with the
+chapters above; they use the same column names and the same masks, just to draw
+instead of to count.
+
+The lesson of this chapter is that most of real analysis is not exotic. It is
+careful column handling (`fillna`), boolean masks, and a couple of well-chosen
+library calls. The judgment is in deciding *which* columns mean what, which is why
+those choices are written down explicitly in the code and the documentation rather
+than buried.
+
+---
+
+## Chapter 8. The statistical layer, and where to go from here
 
 The remaining scripts build on everything above and lean on standard statistical
 libraries. You do not need to read them line by line to trust the pipeline, but

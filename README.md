@@ -43,7 +43,9 @@ python src/mimic/verify_triple65_duckdb.py   # independent DuckDB re-derivation
 src/common/icd_codes.py      Single source of truth for all ICD-9/10 code lists
 src/mimic/                   MIMIC-IV cohort build, PSM, regression, evidence/Sankey builders
 src/nis/                     NIS import + survey-weighted analysis
-src/mgb/                     MGB PHQ-9/GAD-7 parsing + symptom-trajectory analysis
+src/mgb/                     MGB pipeline: build_mgb_analysis_dataset (bracket-aware
+                             PHQ-9/GAD-7 parse + coalesced baseline), recompute_b11_b13_final
+                             (MCID improvement, paired-vs-unpaired, trajectory), make_b11_b13_figures
 tests/                       Invariant + ICD-matching unit tests
 docs/                        Architecture, line-by-line internals, Triple65 explainer, ADRs
 ```

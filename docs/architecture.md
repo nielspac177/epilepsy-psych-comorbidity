@@ -32,8 +32,8 @@ flowchart TD
 
     subgraph MGB["MGB pipeline (src/mgb)"]
         G1["IRB chart-review extract"]
-        G2["parse_phq_gad<br/>(bracket-aware PHQ-9/GAD-7)"]
-        G3["symptom trajectory<br/>MCID improvement, paired-vs-unpaired"]
+        G2["build_mgb_analysis_dataset<br/>bracket-aware parse + coalesced baseline<br/>(phq9_pre/post, gad7_pre/post)"]
+        G3["recompute_b11_b13_final<br/>MCID improvement, paired-vs-unpaired, trajectory<br/>+ make_b11_b13_figures"]
         G1 --> G2 --> G3
     end
 
