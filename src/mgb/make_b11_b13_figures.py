@@ -31,7 +31,7 @@ ED50 = {"phq9": 3.7, "gad7": 3.3}
 
 def load(csv):
     d = pd.read_csv(csv)
-    for c in ["phq9_baseline", "phq9_followup", "gad7_baseline", "gad7_followup",
+    for c in ["phq9_pre", "phq9_post", "gad7_pre", "gad7_post",
               "followup_years", "preop_any_psych_dx", "postop_psych_pointprev",
               "multiple_procedure", "seizure_free"]:
         if c in d.columns:
@@ -42,8 +42,8 @@ def load(csv):
 def fig_b11(d, out):
     fig, axes = plt.subplots(1, 2, figsize=(8, 4.2))
     for ax, (pre_c, post_c, name, thr) in zip(
-        axes, [("phq9_baseline", "phq9_followup", "PHQ-9", ED50["phq9"]),
-               ("gad7_baseline", "gad7_followup", "GAD-7", ED50["gad7"])]):
+        axes, [("phq9_pre", "phq9_post", "PHQ-9", ED50["phq9"]),
+               ("gad7_pre", "gad7_post", "GAD-7", ED50["gad7"])]):
         sub = d[d[pre_c].notna() & d[post_c].notna()]
         n_imp = 0
         for _, r in sub.iterrows():
@@ -69,8 +69,8 @@ def fig_b11(d, out):
 def fig_b12(d, out):
     fig, axes = plt.subplots(1, 2, figsize=(8, 4.2))
     for ax, (pre_c, post_c, name) in zip(
-        axes, [("phq9_baseline", "phq9_followup", "PHQ-9"),
-               ("gad7_baseline", "gad7_followup", "GAD-7")]):
+        axes, [("phq9_pre", "phq9_post", "PHQ-9"),
+               ("gad7_pre", "gad7_post", "GAD-7")]):
         paired = d[pre_c].notna() & d[post_c].notna()
         groups = [d.loc[paired, "followup_years"].dropna(), d.loc[~paired, "followup_years"].dropna()]
         parts = ax.boxplot(groups, labels=[f"Paired\n(n={groups[0].shape[0]})", f"Unpaired\n(n={groups[1].shape[0]})"],
@@ -83,7 +83,7 @@ def fig_b12(d, out):
         ax.set_ylabel("Follow-up length (years)")
         ax.set_title(f"{name}: follow-up by data availability", fontsize=10)
         ax.spines[["top", "right"]].set_visible(False)
-    fig.suptitle("Patients with paired scores have shorter follow-up (a temporal, not clinical, difference)", fontsize=10)
+    fig.suptitle("Follow-up length is similar for patients with vs without paired scores (no significant difference)", fontsize=9.5)
     fig.tight_layout(rect=(0, 0, 1, 0.95))
     fig.savefig(out / "fig_b12_followup.png", dpi=160)
     plt.close(fig)

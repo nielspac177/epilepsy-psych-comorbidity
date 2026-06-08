@@ -77,6 +77,14 @@ def main() -> int:
     phq["gad7_followup"] = r["GAD-7.2"].map(parse_score)
     phq["gad7_mid"] = r["GAD-7.1"].map(parse_score)
 
+    # Pre/post used for the symptom analyses: the last column is the last follow-up,
+    # and the two earlier columns are coalesced into a single baseline (earliest
+    # value preferred, filled from the other) to maximize paired coverage.
+    phq["phq9_pre"] = phq["phq9_baseline"].fillna(phq["phq9_mid"])
+    phq["phq9_post"] = phq["phq9_followup"]
+    phq["gad7_pre"] = phq["gad7_baseline"].fillna(phq["gad7_mid"])
+    phq["gad7_post"] = phq["gad7_followup"]
+
     df = m.merge(phq, on="MRN", how="left")
 
     # --- post-op point-prevalence psychiatric flag from follow-up ICD columns --
