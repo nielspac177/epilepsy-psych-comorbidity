@@ -129,7 +129,10 @@ def main() -> int:
     prior_res = yn01("Prior resective intervention? 0=no, 1= yes")
     prior_oth = yn01("Prior other interventions? 0=no, 1= yes")
     definitive = base["Subsequent treatment? (y/n)"].astype(str).str.strip().str.lower().eq("y").astype(int)
-    df["n_treatments"] = (prior_res.values + prior_oth.values + definitive.values).astype(int)
+    # Every patient underwent at least one therapeutic epilepsy operation (the index
+    # procedure), so the count is floored at 1; prior and additional procedures add to it.
+    n = prior_res.values + prior_oth.values + definitive.values
+    df["n_treatments"] = np.clip(n, 1, None).astype(int)
     df["multiple_treatments"] = (df["n_treatments"] >= 2).astype(int)
 
     # ---- social vulnerability (scale to 0-1 if stored as 0-100) ------------

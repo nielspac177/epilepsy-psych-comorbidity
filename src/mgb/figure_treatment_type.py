@@ -55,9 +55,11 @@ for ax, col, title in [(axes[0], "improved", "A  Psychiatric improvement"),
     ax.set_title(title, loc="left", fontsize=11, fontweight="bold")
     ax.spines[["top", "right"]].set_visible(False)
 
-axes[0].annotate(f"Fisher p={fisher_p('improved'):.3g} (res vs neuromod)", (0.5, 0.93),
-                 xycoords="axes fraction", ha="center", fontsize=8, style="italic")
-axes[1].annotate(f"Fisher p={fisher_p('seizure_free'):.3g}", (0.5, 0.93),
+_pi = fisher_p("improved")
+if _pi < 0.99:  # omit an uninformative p of 1.0
+    axes[0].annotate(f"Fisher p={_pi:.3g} (res vs neuromod)", (0.5, 0.93),
+                     xycoords="axes fraction", ha="center", fontsize=8, style="italic")
+axes[1].annotate(f"Fisher p={fisher_p('seizure_free'):.3g} (res vs neuromod)", (0.5, 0.93),
                  xycoords="axes fraction", ha="center", fontsize=8, style="italic")
 fig.suptitle("Psychiatric improvement and seizure freedom by treatment group (MGB)",
              fontsize=10.5, y=1.02)
