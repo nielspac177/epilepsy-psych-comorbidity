@@ -22,9 +22,9 @@ def fisher_p(col):
     tab = pd.crosstab(sub.treatment_group, sub[col])
     return stats.fisher_exact(tab.values)[1]
 
-order = ["RES_ABLATIVE", "NEUROMOD", "NONE"]
-labels = ["Resective/\nablative\n(n=184)", "Neuro-\nmodulation\n(n=46)", "None\n(n=31)"]
-colors = ["#2c7fb8", "#d95f0e", "#999999"]
+order = ["RES_ABLATIVE", "NEUROMOD"]
+labels = ["Resective/\nablative\n(n=227)", "Neuro-\nmodulation\n(n=46)"]
+colors = ["#2c7fb8", "#d95f0e"]
 
 
 def rates(col):

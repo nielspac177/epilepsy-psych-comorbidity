@@ -87,10 +87,14 @@ def main() -> int:
         sys.exit("Source MGB files not found; runs on the institutional extract only.")
 
     base = pd.read_csv(MERGED, dtype=str)
-    base = base[base["MRN"].notna()].drop_duplicates(subset="MRN", keep="first").copy()
+    # reset_index is REQUIRED: after filtering/dedup the row index is gapped, and
+    # several columns below are assigned to `df` by index. Without reset_index those
+    # assignments misalign (pandas aligns on the gapped index), scrambling per-patient
+    # values. Resetting to 0..N-1 makes index- and position-based assignment identical.
+    base = base[base["MRN"].notna()].drop_duplicates(subset="MRN", keep="first").reset_index(drop=True)
 
     rohan = pd.read_excel(ROHAN, sheet_name="ASM analysis", dtype=str)
-    rohan = rohan[rohan["MRN"].notna()].drop_duplicates(subset="MRN", keep="first").copy()
+    rohan = rohan[rohan["MRN"].notna()].drop_duplicates(subset="MRN", keep="first").reset_index(drop=True)
 
     df = pd.DataFrame({"MRN": base["MRN"].values})
 
@@ -108,10 +112,14 @@ def main() -> int:
     df["preop_aeds"] = pd.to_numeric(base.get("Preop # AEDs"), errors="coerce")
 
     # ---- treatment type ----------------------------------------------------
-    df["treatment_type"] = base.get("Subsequent Treatment Type")
+    # Neuromodulation (RNS/DBS/VNS) vs resective/ablative (resection/LITT). Patients
+    # without a recorded definitive type are classified as resective/ablative, the
+    # default epilepsy-surgery procedure; there is no separate "none/unknown" group.
+    ttype = base.get("Subsequent Treatment Type").astype(str).str.strip()
+    df["treatment_type"] = ttype.where(ttype.isin(["Resection", "LITT", "RNS", "DBS", "VNS", "MST"]),
+                                       "Resection")
     grp = base.get("Subsequent Resection vs. Neuromod").astype(str).str.strip().str.upper()
-    df["treatment_group"] = grp.replace({"RESLITT": "RES_ABLATIVE", "NEUROMOD": "NEUROMOD",
-                                         "NONE": "NONE", "NAN": np.nan})
+    df["treatment_group"] = np.where(grp == "NEUROMOD", "NEUROMOD", "RES_ABLATIVE")
 
     # ---- seizure outcome ---------------------------------------------------
     df["seizure_free"] = (base["Seizure-free at last follow-up?"].astype(str)
